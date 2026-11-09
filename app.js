@@ -38,9 +38,29 @@ const UI_TEXT = {
     step4Title: '৪. নিশ্চিত করুন',
     step4Desc: 'নিশ্চিত করলে সাথে সাথে সার্ভার ও ফোন থেকে সমস্ত রেকর্ড মুছে যাবে।',
     delWhatTitle: 'অ্যাকাউন্ট ডিলিট করলে যা যা মুছে যায়',
-    delReqTitle: 'ফোন বা অ্যাপ ছাড়া ডেটা মুছে ফেলার অনুরোধ',
-    delReqDesc: 'অ্যাপটি আনইনস্টল করে থাকলে নিচের বাটনে ক্লিক করে আমাদের সাপোর্ট টিমের কাছে ইমেইল পাঠান। ৪৮ ঘণ্টার মধ্যে সমস্ত রেকর্ড মুছে দিয়ে নিশ্চিত করা হবে।',
-    delReqBtn: 'ডেটা ডিলিটের অনুরোধ পাঠান',
+    delReqTitle: 'অনলাইন অ্যাকাউন্ট ও ডেটা ডিলিট রিকোয়েস্ট',
+    delReqDesc: 'অ্যাপটি ইতিমধ্যে আনইনস্টল করে থাকলে নিচের ফর্মটি পূরণ করে জমা দিন। আমাদের অ্যাডমিন প্যানেলে অনুরোধটি সরাসরি রেকর্ড হবে এবং ৪৮ ঘণ্টার মধ্যে স্থায়ীভাবে আপনার সমস্ত ডেটা মুছে দেওয়া হবে।',
+    lblDelEmail: 'রেজিস্টার্ড ইমেইল বা মোবাইল নম্বর *',
+    placeholderEmail: 'উদাহরণ: user@example.com বা ০১XXXXXXXXX',
+    lblDelReason: 'অ্যাকাউন্ট ডিলিট করার কারণ *',
+    optReasonDefault: 'কারণ নির্বাচন করুন...',
+    optReasonPrivacy: 'গোপনীয়তা ও ব্যক্তিগত ডেটা নিরাপত্তা উদ্বেগ',
+    optReasonNoNeed: 'অ্যাপটি ব্যবহারের আর প্রয়োজন নেই',
+    optReasonAlt: 'অন্য কোনো ট্র্যাকার অ্যাপে চলে গেছি',
+    optReasonBugs: 'প্রযুক্তিগত সমস্যা বা বাগের সম্মুখীন হয়েছি',
+    optReasonReset: 'নতুন করে শুরু করার জন্য সমস্ত ডেটা ক্লিয়ার চাই',
+    optReasonNotify: 'অপ্রয়োজনীয় নোটিফিকেশন বা জটিল ইন্টারফেস',
+    optReasonOther: 'অন্যান্য কারণ (নিচে বর্ণনা করুন)',
+    lblDelDesc: 'বিস্তারিত বিবরণ বা মতামত (ঐচ্ছিক)',
+    placeholderDesc: 'আপনার কোনো সুনির্দিষ্ট মতামত বা ফিডব্যাক থাকলে লিখতে পারেন...',
+    lblDelConfirm: 'আমি নিশ্চিত করছি যে অ্যাকাউন্ট মুছে ফেললে আমার সমস্ত পিরিয়ড হিস্ট্রি, লক্ষণ লগ ও স্বাস্থ্য ডেটা স্থায়ীভাবে মুছে যাবে এবং আর পুনরুদ্ধার করা যাবে না।',
+    uiDelSubmitBtn: 'ডিলিট রিকোয়েস্ট সাবমিট করুন',
+    submitting: 'জমা দেওয়া হচ্ছে...',
+    errEmailEmpty: 'অনুগ্রহ করে আপনার রেজিস্টার্ড ইমেইল বা মোবাইল নম্বর লিখুন।',
+    errReasonEmpty: 'অনুগ্রহ করে অ্যাকাউন্ট ডিলিট করার কারণ নির্বাচন করুন।',
+    errConfirmRequired: 'অনুগ্রহ করে শর্তাবলীতে সম্মতি প্রদান নিশ্চিত করুন।',
+    successMsg: 'আপনার অ্যাকাউন্ট ডিলিটের অনুরোধ সফলভাবে নথিভুক্ত হয়েছে (আইডি: {ID})। আমাদের অ্যাডমিন টিম দ্রুত এটি যাচাই করে স্থায়ীভাবে ডেটা মুছে দেবে।',
+    failureMsg: 'অনুরোধটি পাঠানো সম্ভব হয়নি। অনুগ্রহ করে ইন্টারনেট সংযোগ পরীক্ষা করে পুনরায় চেষ্টা করুন।',
     deletedItems: [
       'আপনার নাম, ইমেইল এবং সাইন-ইন সংক্রান্ত সমস্ত প্রমাণক',
       'পিরিয়ড শুরু/শেষের তারিখ, সাইকেল হিস্ট্রি এবং ওভুলেশন লগ',
@@ -71,9 +91,29 @@ const UI_TEXT = {
     step4Title: '4. Confirm Permanent Deletion',
     step4Desc: 'Confirm the action to irrevocably purge all local and cloud data.',
     delWhatTitle: 'What Data Is Purged Upon Account Deletion?',
-    delReqTitle: 'Need Deletion Without the Mobile App?',
-    delReqDesc: 'If you have uninstalled the app or lost access to your device, you can submit an off-app data deletion request. We will permanently purge your records within 48 hours.',
-    delReqBtn: 'Submit Deletion Request via Email',
+    delReqTitle: 'Online Account & Data Deletion Request',
+    delReqDesc: 'If you have already uninstalled the app or lost access, fill out the form below to submit a deletion request directly to our admin team. All data will be permanently wiped within 48 hours.',
+    lblDelEmail: 'Registered Email or Phone Number *',
+    placeholderEmail: 'e.g. user@example.com or +8801XXXXXXXXX',
+    lblDelReason: 'Reason for Account Deletion *',
+    optReasonDefault: 'Select a reason...',
+    optReasonPrivacy: 'Privacy & data security concerns',
+    optReasonNoNeed: 'No longer need the app / Stopped tracking',
+    optReasonAlt: 'Found an alternative tracker app',
+    optReasonBugs: 'Encountered technical issues or bugs',
+    optReasonReset: 'Want to clear data and start fresh',
+    optReasonNotify: 'Too many notifications / UI complexity',
+    optReasonOther: 'Other reason (explain below)',
+    lblDelDesc: 'Additional Details or Feedback (Optional)',
+    placeholderDesc: 'Share any details or feedback to help us improve...',
+    lblDelConfirm: 'I understand that deleting my account will permanently erase all period logs, health records, and profile data irrevocably.',
+    uiDelSubmitBtn: 'Submit Deletion Request',
+    submitting: 'Submitting...',
+    errEmailEmpty: 'Please provide your registered email or phone number.',
+    errReasonEmpty: 'Please select a reason for deletion.',
+    errConfirmRequired: 'Please accept the confirmation checkbox to proceed.',
+    successMsg: 'Your account deletion request has been recorded (ID: {ID}). Our admin team will verify and permanently purge your records shortly.',
+    failureMsg: 'Failed to submit request. Please check your internet connection and try again.',
     deletedItems: [
       'User profile, credentials, and authentication records',
       'Menstrual cycle logs, ovulation predictions, and period durations',
@@ -226,16 +266,135 @@ function renderDeletionView() {
   setText('ui-del-req-title', ui.delReqTitle);
   setText('ui-del-req-desc', ui.delReqDesc);
 
-  const reqBtn = document.getElementById('ui-del-req-btn');
-  if (reqBtn) {
-    const span = reqBtn.querySelector('span');
-    if (span) span.textContent = ui.delReqBtn;
-  }
+  // Form labels & placeholders
+  setText('lbl-del-email', ui.lblDelEmail);
+  const emailInput = document.getElementById('del-email');
+  if (emailInput) emailInput.placeholder = ui.placeholderEmail;
+
+  setText('lbl-del-reason', ui.lblDelReason);
+  setText('opt-reason-default', ui.optReasonDefault);
+  setText('opt-reason-privacy', ui.optReasonPrivacy);
+  setText('opt-reason-noneed', ui.optReasonNoNeed);
+  setText('opt-reason-alt', ui.optReasonAlt);
+  setText('opt-reason-bugs', ui.optReasonBugs);
+  setText('opt-reason-reset', ui.optReasonReset);
+  setText('opt-reason-notify', ui.optReasonNotify);
+  setText('opt-reason-other', ui.optReasonOther);
+
+  setText('lbl-del-description', ui.lblDelDesc);
+  const descTextarea = document.getElementById('del-description');
+  if (descTextarea) descTextarea.placeholder = ui.placeholderDesc;
+
+  setText('lbl-del-confirm', ui.lblDelConfirm);
+  setText('ui-del-submit-btn', ui.uiDelSubmitBtn);
 
   const listEl = document.getElementById('deletion-items-list');
   if (listEl) {
     listEl.innerHTML = ui.deletedItems.map(item => `<li>${item}</li>`).join('');
   }
+}
+
+// Online Deletion Form Submission to Firestore REST API
+async function handleDeletionSubmit(event) {
+  event.preventDefault();
+  const ui = UI_TEXT[currentLang];
+  const submitBtn = document.getElementById('del-submit-btn');
+  const spinner = document.getElementById('del-btn-spinner');
+  const btnText = document.getElementById('ui-del-submit-btn');
+
+  const emailInput = document.getElementById('del-email');
+  const reasonSelect = document.getElementById('del-reason');
+  const descTextarea = document.getElementById('del-description');
+  const confirmBox = document.getElementById('del-confirm');
+
+  const email = emailInput ? emailInput.value.trim() : '';
+  const reason = reasonSelect ? reasonSelect.value : '';
+  const reasonLabel = reasonSelect && reasonSelect.selectedIndex >= 0 ? reasonSelect.options[reasonSelect.selectedIndex].text : '';
+  const description = descTextarea ? descTextarea.value.trim() : '';
+
+  if (!email || email.length < 3) {
+    showDelAlert('error', ui.errEmailEmpty);
+    emailInput?.focus();
+    return;
+  }
+
+  if (!reason) {
+    showDelAlert('error', ui.errReasonEmpty);
+    reasonSelect?.focus();
+    return;
+  }
+
+  if (!confirmBox || !confirmBox.checked) {
+    showDelAlert('error', ui.errConfirmRequired);
+    confirmBox?.focus();
+    return;
+  }
+
+  hideDelAlert();
+  if (submitBtn) submitBtn.disabled = true;
+  if (spinner) spinner.style.display = 'inline-block';
+  if (btnText) btnText.textContent = ui.submitting;
+
+  try {
+    const payload = {
+      fields: {
+        email: { stringValue: email },
+        reason: { stringValue: reason },
+        reasonLabel: { stringValue: reasonLabel },
+        description: { stringValue: description || 'N/A' },
+        status: { stringValue: 'pending' },
+        createdAt: { timestampValue: new Date().toISOString() },
+        source: { stringValue: 'web_portal' },
+        clientLang: { stringValue: currentLang }
+      }
+    };
+
+    const res = await fetch(
+      'https://firestore.googleapis.com/v1/projects/joba-a913b/databases/(default)/documents/account_deletion_requests',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
+
+    const data = await res.json();
+    const docId = data.name ? data.name.split('/').pop() : 'REQUEST';
+
+    // Clear form inputs
+    emailInput.value = '';
+    reasonSelect.selectedIndex = 0;
+    if (descTextarea) descTextarea.value = '';
+    confirmBox.checked = false;
+
+    showDelAlert('success', ui.successMsg.replace('{ID}', docId.substring(0, 8)));
+  } catch (err) {
+    console.error('Account deletion request error:', err);
+    showDelAlert('error', ui.failureMsg);
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+    if (spinner) spinner.style.display = 'none';
+    if (btnText) btnText.textContent = ui.uiDelSubmitBtn;
+  }
+}
+
+function showDelAlert(type, message) {
+  const alertEl = document.getElementById('del-alert');
+  if (!alertEl) return;
+  alertEl.className = `del-alert-box ${type}`;
+  alertEl.textContent = message;
+  alertEl.style.display = 'flex';
+}
+
+function hideDelAlert() {
+  const alertEl = document.getElementById('del-alert');
+  if (!alertEl) return;
+  alertEl.style.display = 'none';
+  alertEl.textContent = '';
 }
 
 // Live Sync from Firestore REST
