@@ -1,49 +1,46 @@
 /**
  * Joba Legal & Trust Portal
- * Dynamic Client-Side Controller
+ * Clean, Minimalist Client-Side Controller
  * Fetches real-time legal documents from Firestore REST API (Admin Panel Sync)
- * with instant zero-latency fallback to pre-bundled Default Legal Data.
+ * with instant fallback to pre-bundled Default Legal Data.
  */
 
-// State
+// Application State
 let currentLang = localStorage.getItem('joba_legal_lang') || 'bn'; // 'bn' | 'en'
-let activeTab = 'privacy'; // 'privacy' | 'terms' | 'deletion'
+let currentSection = 'privacy'; // 'privacy' | 'terms' | 'deletion'
 
 const liveData = {
   privacyPolicy: null,
   termsConditions: null,
 };
 
-// UI Translations
+// UI Text Dictionary
 const UI_TEXT = {
   bn: {
-    heroBadge: 'অফিসিয়াল পলিসি ও ডেটা সুরক্ষা পোর্টাল',
-    heroTitle: 'আপনার স্বাস্থ্য ও ব্যক্তিগত তথ্যের সর্বোচ্চ নিরাপত্তা',
-    heroSubtitle: 'Joba অ্যাপে আপনার পিরিয়ড ও স্বাস্থ্য তথ্যের গোপনীয়তা আমাদের মূল অগ্রাধিকার। এখানে আমাদের সম্পূর্ণ নীতিমালা স্বচ্ছভাবে উপস্থাপন করা হলো।',
-    tabPrivacy: 'গোপনীয়তা নীতি (Privacy Policy)',
-    tabTerms: 'নিয়ম ও শর্তাবলী (Terms & Conditions)',
-    tabDeletion: 'অ্যাকাউন্ট ও ডেটা ডিলিট (Data Deletion)',
+    navPrivacy: 'গোপনীয়তা নীতি',
+    navTerms: 'নিয়ম ও শর্তাবলী',
+    navDeletion: 'অ্যাকাউন্ট ডিলিট',
     langToggle: 'English',
-    versionLabel: 'সংস্করণ:',
-    updatedLabel: 'সর্বশেষ আপডেট:',
-    liveSync: 'লাইভ সিঙ্ক সক্রিয়',
-    printBtn: 'প্রিন্ট করুন',
+    titlePrivacy: 'গোপনীয়তা নীতি (Privacy Policy)',
+    titleTerms: 'নিয়ম ও শর্তাবলী (Terms & Conditions)',
+    titleDeletion: 'অ্যাকাউন্ট ও ডেটা ডিলিট (Data Deletion)',
+    updatedPrefix: 'সর্বশেষ আপডেট:',
+    appScope: 'Joba Mobile Application',
     footerCopy: '© ২০২৬ Joba. সর্বস্বত্ব সংরক্ষিত। উইমেনস পিরিয়ড অ্যান্ড হেলথ ট্র্যাকার।',
-    deletionTitle: 'অ্যাকাউন্ট ও সংগৃহীত ডেটা মুছে ফেলার অনুরোধ',
-    deletionSubtitle: 'গুগল প্লে স্টোর ডেটা সেফটি নীতি অনুযায়ী আপনার যেকোনো সময় সমস্ত ব্যক্তিগত ও স্বাস্থ্য ডেটা মুছে ফেলার পূর্ণ অধিকার রয়েছে।',
-    inAppStepTitle: 'অ্যাপ থেকে সরাসরি ডিলিট করার নিয়ম',
+    delLead: 'গুগল প্লে স্টোর ডেটা সুরক্ষা ও গোপনীয়তা নীতি অনুযায়ী আপনার যেকোনো সময় সমস্ত ব্যক্তিগত ও স্বাস্থ্য ডেটা মুছে ফেলার পূর্ণ অধিকার রয়েছে।',
+    delInAppHeading: 'অ্যাপ থেকে সরাসরি ডিলিট করার নিয়ম',
     step1Title: '১. Joba অ্যাপ ওপেন করুন',
-    step1Desc: 'আপনার ফোনের Joba অ্যাপটিতে প্রবেশ করুন।',
-    step2Title: '২. More (আরও) ট্যাবে যান',
-    step2Desc: 'নিচের নেভিগেশন বার থেকে একদম ডানের "More" অপশনে চাপুন।',
+    step1Desc: 'আপনার ডিভাইসে Joba অ্যাপটি চালু করুন।',
+    step2Title: '২. More ট্যাবে যান',
+    step2Desc: 'নিচের মেনু বার থেকে ডানের "More (আরও)" অপশনে ট্যাপ করুন।',
     step3Title: '৩. Delete Account সিলেক্ট করুন',
-    step3Desc: '"অ্যাকাউন্ট মুছুন (Delete Account)" অপশনে ট্যাপ করুন।',
-    step4Title: '৪. নিশ্চিত করে স্থায়ীভাবে মুছে ফেলুন',
-    step4Desc: 'নিশ্চিতকরণ বাটনে চাপ দিলেই সাথে সাথে ক্লাউড ও ডিভাইস থেকে সমস্ত তথ্য মুছে যাবে।',
-    webRequestTitle: 'ফোন বা অ্যাপ ছাড়াই ডেটা মোছার অনুরোধ পাঠাতে চান?',
-    webRequestDesc: 'আপনি যদি অ্যাপটি আনইনস্টল করে থাকেন এবং ক্লাউড থেকে আপনার সমস্ত ব্যাকআপ ও রেকর্ড মুছে ফেলতে চান, তবে নিচের বাটনে ক্লিক করে আমাদের সাপোর্ট টিমের কাছে অনুরোধ পাঠান। আমরা ৪৮ ঘণ্টার মধ্যে সমস্ত রেকর্ড মুছে দিয়ে নিশ্চিত করব।',
-    btnSendRequest: 'ইমেইলে ডেটা ডিলিটের অনুরোধ পাঠান',
-    whatDeletedTitle: 'অ্যাকাউন্ট ডিলিট করলে কী কী মুছে যায়?',
+    step3Desc: '"অ্যাকাউন্ট মুছুন (Delete Account)" অপশনটিতে চাপুন।',
+    step4Title: '৪. নিশ্চিত করুন',
+    step4Desc: 'নিশ্চিত করলে সাথে সাথে সার্ভার ও ফোন থেকে সমস্ত রেকর্ড মুছে যাবে।',
+    delWhatTitle: 'অ্যাকাউন্ট ডিলিট করলে যা যা মুছে যায়',
+    delReqTitle: 'ফোন বা অ্যাপ ছাড়া ডেটা মুছে ফেলার অনুরোধ',
+    delReqDesc: 'অ্যাপটি আনইনস্টল করে থাকলে নিচের বাটনে ক্লিক করে আমাদের সাপোর্ট টিমের কাছে ইমেইল পাঠান। ৪৮ ঘণ্টার মধ্যে সমস্ত রেকর্ড মুছে দিয়ে নিশ্চিত করা হবে।',
+    delReqBtn: 'ডেটা ডিলিটের অনুরোধ পাঠান',
     deletedItems: [
       'আপনার নাম, ইমেইল এবং সাইন-ইন সংক্রান্ত সমস্ত প্রমাণক',
       'পিরিয়ড শুরু/শেষের তারিখ, সাইকেল হিস্ট্রি এবং ওভুলেশন লগ',
@@ -53,33 +50,30 @@ const UI_TEXT = {
     ]
   },
   en: {
-    heroBadge: 'Official Policy & Trust Portal',
-    heroTitle: 'Guaranteed Sanctity for Your Personal Health Data',
-    heroSubtitle: 'At Joba, your intimate menstrual and reproductive health privacy is our highest priority. Explore our exhaustive, transparent legal standards.',
-    tabPrivacy: 'Privacy Policy',
-    tabTerms: 'Terms & Conditions',
-    tabDeletion: 'Account & Data Deletion',
+    navPrivacy: 'Privacy Policy',
+    navTerms: 'Terms of Service',
+    navDeletion: 'Data Deletion',
     langToggle: 'বাংলা',
-    versionLabel: 'Version:',
-    updatedLabel: 'Last Updated:',
-    liveSync: 'Live Cloud Sync',
-    printBtn: 'Print Policy',
+    titlePrivacy: 'Privacy Policy',
+    titleTerms: 'Terms & Conditions',
+    titleDeletion: 'Account & Data Deletion',
+    updatedPrefix: 'Last Updated:',
+    appScope: 'Joba Mobile Application',
     footerCopy: '© 2026 Joba. All rights reserved. Women’s Health & Cycle Tracker.',
-    deletionTitle: 'Account & Personal Data Deletion Request',
-    deletionSubtitle: 'In strict compliance with Google Play Data Safety policies, you retain uninhibited sovereignty to purge your account and records at any time.',
-    inAppStepTitle: 'How to Delete Directly from the Joba App',
+    delLead: 'In strict compliance with Google Play Data Safety policies, you retain uninhibited sovereignty to purge your account and personal records at any time.',
+    delInAppHeading: 'How to Delete Directly from the Joba App',
     step1Title: '1. Open Joba App',
     step1Desc: 'Launch the Joba application on your mobile device.',
     step2Title: '2. Go to More Tab',
-    step2Desc: 'Tap the "More" tab located on the bottom navigation bar.',
+    step2Desc: 'Tap the "More" option located on the bottom navigation bar.',
     step3Title: '3. Tap Delete Account',
     step3Desc: 'Select "Delete Account" under account management.',
     step4Title: '4. Confirm Permanent Deletion',
     step4Desc: 'Confirm the action to irrevocably purge all local and cloud data.',
-    webRequestTitle: 'Need Deletion Without the Mobile App?',
-    webRequestDesc: 'If you have uninstalled the app or lost access to your device, you can submit an off-app data deletion request. Our compliance team will permanently purge your records within 48 hours.',
-    btnSendRequest: 'Submit Deletion Request via Email',
-    whatDeletedTitle: 'What Data Is Purged Upon Account Deletion?',
+    delWhatTitle: 'What Data Is Purged Upon Account Deletion?',
+    delReqTitle: 'Need Deletion Without the Mobile App?',
+    delReqDesc: 'If you have uninstalled the app or lost access to your device, you can submit an off-app data deletion request. We will permanently purge your records within 48 hours.',
+    delReqBtn: 'Submit Deletion Request via Email',
     deletedItems: [
       'User profile, credentials, and authentication records',
       'Menstrual cycle logs, ovulation predictions, and period durations',
@@ -90,59 +84,61 @@ const UI_TEXT = {
   }
 };
 
-// Initialize Application
+// Lifecycle
 document.addEventListener('DOMContentLoaded', () => {
   setupHashRouting();
-  setupLanguage();
+  setupLanguageToggle();
   renderCurrentView();
   fetchLiveLegalDocuments();
 });
 
-// Hash Routing: #privacy, #terms, #deletion
+// Navigation Handling
 function setupHashRouting() {
   const hash = window.location.hash.toLowerCase().replace('#', '');
   if (hash === 'terms' || hash === 'terms_conditions') {
-    activeTab = 'terms';
+    currentSection = 'terms';
   } else if (hash === 'deletion' || hash === 'delete' || hash === 'delete-account') {
-    activeTab = 'deletion';
+    currentSection = 'deletion';
   } else {
-    activeTab = 'privacy';
+    currentSection = 'privacy';
   }
 
   window.addEventListener('hashchange', () => {
     const newHash = window.location.hash.toLowerCase().replace('#', '');
     if (newHash === 'terms' || newHash === 'terms_conditions') {
-      switchTab('terms', false);
+      navigateTo('terms', null, false);
     } else if (newHash === 'deletion' || newHash === 'delete' || newHash === 'delete-account') {
-      switchTab('deletion', false);
+      navigateTo('deletion', null, false);
     } else {
-      switchTab('privacy', false);
+      navigateTo('privacy', null, false);
     }
   });
 }
 
-function switchTab(tabName, updateHash = true) {
-  activeTab = tabName;
+function navigateTo(section, event, updateHash = true) {
+  if (event) event.preventDefault();
+  currentSection = section;
+
   if (updateHash) {
-    window.location.hash = tabName;
+    window.location.hash = section;
   }
 
-  // Update tab buttons
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.tab === tabName);
+  // Update nav links active state
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.dataset.nav === section);
   });
 
-  // Update panels
-  document.querySelectorAll('.tab-panel').forEach(panel => {
-    panel.classList.toggle('active', panel.id === `panel-${tabName}`);
+  // Update content panels
+  document.querySelectorAll('.content-panel').forEach(panel => {
+    panel.classList.toggle('active', panel.id === `panel-${section}`);
   });
 
   renderCurrentView();
-  window.scrollTo({ top: 220, behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Language Toggle
-function setupLanguage() {
+// Language Switcher
+function setupLanguageToggle() {
   const langBtn = document.getElementById('lang-toggle-btn');
   if (langBtn) {
     langBtn.addEventListener('click', () => {
@@ -153,48 +149,53 @@ function setupLanguage() {
   }
 }
 
-// Render Content
+// Render Engine
 function renderCurrentView() {
   const ui = UI_TEXT[currentLang];
   const isBn = currentLang === 'bn';
 
-  // Update UI Elements
-  setText('ui-hero-badge', ui.heroBadge);
-  setText('ui-hero-title', ui.heroTitle);
-  setText('ui-hero-subtitle', ui.heroSubtitle);
-  setText('tab-label-privacy', ui.tabPrivacy);
-  setText('tab-label-terms', ui.tabTerms);
-  setText('tab-label-deletion', ui.tabDeletion);
+  // Navigation text
+  setText('nav-text-privacy', ui.navPrivacy);
+  setText('nav-text-terms', ui.navTerms);
+  setText('nav-text-deletion', ui.navDeletion);
   setText('lang-toggle-text', ui.langToggle);
   setText('ui-footer-copy', ui.footerCopy);
 
-  // Active Tab Buttons
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.tab === activeTab);
+  // Active Nav Link
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.classList.toggle('active', link.dataset.nav === currentSection);
   });
 
-  // Active Panels
-  document.querySelectorAll('.tab-panel').forEach(panel => {
-    panel.classList.toggle('active', panel.id === `panel-${activeTab}`);
+  // Active Panel
+  document.querySelectorAll('.content-panel').forEach(panel => {
+    panel.classList.toggle('active', panel.id === `panel-${currentSection}`);
   });
 
-  // Render Document Content
-  if (activeTab === 'privacy') {
-    renderLegalDoc('privacyPolicy', 'privacy-content', 'privacy-version', 'privacy-updated');
-  } else if (activeTab === 'terms') {
-    renderLegalDoc('termsConditions', 'terms-content', 'terms-version', 'terms-updated');
-  } else if (activeTab === 'deletion') {
+  // Page Header Details
+  if (currentSection === 'privacy') {
+    setText('page-title', ui.titlePrivacy);
+    renderLegalDoc('privacyPolicy', 'privacy-content');
+  } else if (currentSection === 'terms') {
+    setText('page-title', ui.titleTerms);
+    renderLegalDoc('termsConditions', 'terms-content');
+  } else if (currentSection === 'deletion') {
+    setText('page-title', ui.titleDeletion);
+    setText('page-meta-updated', `${ui.updatedPrefix} 2026`);
+    setText('page-meta-app', ui.appScope);
     renderDeletionView();
   }
 }
 
-function renderLegalDoc(key, contentElId, versionElId, updatedElId) {
+function renderLegalDoc(key, contentElId) {
+  const ui = UI_TEXT[currentLang];
   const isBn = currentLang === 'bn';
   const data = liveData[key] || DEFAULT_LEGAL[key];
 
   const content = isBn ? data.contentBn : data.contentEn;
-  const version = data.version || '1.0.0';
   const dateStr = formatDate(data.updatedAt, isBn);
+
+  setText('page-meta-updated', `${ui.updatedPrefix} ${dateStr}`);
+  setText('page-meta-app', ui.appScope);
 
   const container = document.getElementById(contentElId);
   if (container) {
@@ -204,18 +205,13 @@ function renderLegalDoc(key, contentElId, versionElId, updatedElId) {
       container.innerText = content;
     }
   }
-
-  setText(versionElId, `${UI_TEXT[currentLang].versionLabel} ${version}`);
-  setText(updatedElId, `${UI_TEXT[currentLang].updatedLabel} ${dateStr}`);
 }
 
 function renderDeletionView() {
   const ui = UI_TEXT[currentLang];
-  const isBn = currentLang === 'bn';
 
-  setText('ui-del-title', ui.deletionTitle);
-  setText('ui-del-subtitle', ui.deletionSubtitle);
-  setText('ui-del-step-title', ui.inAppStepTitle);
+  setText('ui-del-lead', ui.delLead);
+  setText('ui-del-inapp-heading', ui.delInAppHeading);
 
   setText('step1-title', ui.step1Title);
   setText('step1-desc', ui.step1Desc);
@@ -226,10 +222,15 @@ function renderDeletionView() {
   setText('step4-title', ui.step4Title);
   setText('step4-desc', ui.step4Desc);
 
-  setText('ui-del-req-title', ui.webRequestTitle);
-  setText('ui-del-req-desc', ui.webRequestDesc);
-  setText('ui-del-req-btn', ui.btnSendRequest);
-  setText('ui-del-what-title', ui.whatDeletedTitle);
+  setText('ui-del-what-title', ui.delWhatTitle);
+  setText('ui-del-req-title', ui.delReqTitle);
+  setText('ui-del-req-desc', ui.delReqDesc);
+
+  const reqBtn = document.getElementById('ui-del-req-btn');
+  if (reqBtn) {
+    const span = reqBtn.querySelector('span');
+    if (span) span.textContent = ui.delReqBtn;
+  }
 
   const listEl = document.getElementById('deletion-items-list');
   if (listEl) {
@@ -237,7 +238,7 @@ function renderDeletionView() {
   }
 }
 
-// Fetch Real-time Firestore Documents (Admin Panel Live Sync)
+// Live Sync from Firestore REST
 async function fetchLiveLegalDocuments() {
   const BASE_URL = 'https://firestore.googleapis.com/v1/projects/joba-a913b/databases/(default)/documents/app_config';
 
@@ -257,11 +258,9 @@ async function fetchLiveLegalDocuments() {
       liveData.termsConditions = parseFirestoreDoc(json, 'termsConditions');
     }
 
-    // Update view with live data
     renderCurrentView();
-    console.log('✅ [Joba Legal] Synced with Firestore app_config successfully');
-  } catch (err) {
-    console.warn('⚡ [Joba Legal] Serving pre-bundled default legal documents:', err);
+  } catch (_) {
+    // Fail silently — pre-bundled fallback is active
   }
 }
 
@@ -291,10 +290,7 @@ function formatDate(isoStr, isBn) {
     if (isNaN(d.getTime())) return isoStr;
 
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    if (isBn) {
-      return d.toLocaleDateString('bn-BD', options);
-    }
-    return d.toLocaleDateString('en-US', options);
+    return isBn ? d.toLocaleDateString('bn-BD', options) : d.toLocaleDateString('en-US', options);
   } catch (_) {
     return isoStr;
   }
